@@ -6,6 +6,19 @@ This is a simple demo app that embeds
 for how you can create your own version of [LM Studio](https://lmstudio.ai/),
 but without having to go through some javascript compiler pain.
 
+## Features
+
+- **Local LLM Chat**: Chat with locally loaded language models
+- **CustomGPT Personas**: Select from predefined chatbot personas with specialized system prompts:
+  - Default Assistant - A helpful AI assistant
+  - Creative Writer - Specializes in storytelling and creative writing
+  - Code Mentor - Programming guidance and code reviews
+  - Research Assistant - Academic research and analysis
+  - Patient Teacher - Educational tutoring with clear explanations
+  - Business Advisor - Strategic business consulting
+- **Multi-modal Support**: Image analysis and generation capabilities
+- **Persistent Chat Sessions**: Each persona maintains its own chat context
+
 ## Key details
 
 This is built using [Electron Forge](https://www.electronforge.io/) which is

@@ -9,4 +9,12 @@ interface Message {
   text: string;
 }
 
-export { Message, MessageRole };
+interface Persona {
+  id: string;
+  name: string;
+  description: string;
+  systemPrompt: string;
+  avatar?: string;
+}
+
+export { Message, MessageRole, Persona };
