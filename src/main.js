@@ -69,6 +69,10 @@ let model = undefined;
  */
 let modelContext = undefined;
 let modelSession = undefined;
+/**
+ * Current active persona for the chat session
+ */
+let currentPersona = null;
 
 const createWindow = () => {
   // Create the browser window.
@@ -106,6 +110,10 @@ ipcMain.handle("model-load", loadModel);
  * Two way communication with the model.
  */
 ipcMain.handle("model-chat", chat);
+/**
+ * Switch to a different persona with system prompt
+ */
+ipcMain.handle("model-switch-persona", switchPersona);
 
 /**
  * Given an image, produces a text analysis.
@@ -170,7 +178,32 @@ function loadModel() {
     ),
   });
   modelContext = new LlamaContext({ model });
+  // Initialize with default persona (no system prompt)
   modelSession = new LlamaChatSession({ context: modelContext });
+  return true;
+}
+
+/**
+ * Switches to a new persona by creating a new chat session with the persona's system prompt
+ */
+async function switchPersona(event, persona) {
+  if (!modelContext) {
+    throw new Error("Model not loaded");
+  }
+  
+  currentPersona = persona;
+  
+  // Create a new chat session with the persona's system prompt
+  if (persona && persona.systemPrompt) {
+    modelSession = new LlamaChatSession({ 
+      context: modelContext,
+      systemPrompt: persona.systemPrompt
+    });
+  } else {
+    // Fallback to session without system prompt
+    modelSession = new LlamaChatSession({ context: modelContext });
+  }
+  
   return true;
 }
 

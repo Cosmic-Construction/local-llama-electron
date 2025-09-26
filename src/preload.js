@@ -4,6 +4,7 @@ const { contextBridge, ipcRenderer } = require("electron");
 contextBridge.exposeInMainWorld("electronAPI", {
   loadModel: () => ipcRenderer.invoke("model-load"),
   chat: (userMessage) => ipcRenderer.invoke("model-chat", userMessage),
+  switchPersona: (persona) => ipcRenderer.invoke("model-switch-persona", persona),
   /**
    * Registers a single callback to handle all message streams for image
    * analysis results.  We can't do this on a per request basis because all
