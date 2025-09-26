@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 import { Persona } from "src/types";
 import { PREDEFINED_PERSONAS } from "src/personas";
@@ -14,6 +14,21 @@ interface PersonaSelectorProps {
  */
 const PersonaSelector = ({ selectedPersona, onPersonaChange }: PersonaSelectorProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   const handlePersonaSelect = (persona: Persona) => {
     onPersonaChange(persona);
@@ -21,7 +36,7 @@ const PersonaSelector = ({ selectedPersona, onPersonaChange }: PersonaSelectorPr
   };
 
   return (
-    <div className="dropdown dropdown-bottom mb-4">
+    <div className="dropdown dropdown-bottom mb-4" ref={dropdownRef}>
       <div 
         tabIndex={0} 
         role="button" 
